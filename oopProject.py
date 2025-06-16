@@ -1,69 +1,70 @@
 from abc import ABC, abstractmethod
 
 class Animal(ABC):
-        total_animals=0
+    total_animals = 0
 
-        def __init__(self,name,age,species):
-                self.name=name
-                self.age=age
-                self.species=species
-                Animal.total_animals+=1
+    def __init__(self, name, age, species):
+        self.name = name
+        self.age = age
+        self.species = species
+        Animal.total_animals += 1
 
-        @abstractmethod
-        def makeSound(self):
-                pass
-        @abstractmethod    
-        def getDiet(self):
-                pass
+    @abstractmethod
+    def makeSound(self):
+        pass
+
+    @abstractmethod    
+    def getDiet(self):
+        pass
         
 class Lion(Animal):
-        def __init__(self, name, age, species):
-                super().__init__(name, age, species)
+    def __init__(self, name, age, species):
+        super().__init__(name, age, species)
 
-        def makeSound(self):
-            print("f{self.name} says: Roar!\n\n")
-        
-        def getDiet(self):
-               print("f{self.name} is a carnivore")
+    def makeSound(self):
+        print(f"{self.name} says: Roar!\n\n")  # fixed f-string
+
+    def getDiet(self):
+        print(f"{self.name} is a carnivore")  # fixed f-string
 
 
 class Elephant(Animal):
-       def __init__(self, name, age, species):
-            super().__init__(name, age, species)
+    def __init__(self, name, age, species):
+        super().__init__(name, age, species)
 
-       def makeSound(self):
-              print(f"{self.name} says brumpppp")
+    def makeSound(self):
+        print(f"{self.name} says brumpppp")
 
-       def getDiet(self):
-              print(f"{self.name} is a herbivore")
+    def getDiet(self):
+        print(f"{self.name} is a herbivore")
 
 class Parrot(Animal):
-    def __init__(self, name, age):
-        super().__init__(name, age, "Parrot")
+    def __init__(self, name, age, species):
+        super().__init__(name, age, species)
 
-    def make_sound(self):
+    def makeSound(self):
         print(f"{self.name} says: Squawk!")
 
-    def get_diet(self):
+    def getDiet(self):
         print(f"{self.name} is an Omnivore.")
 
 class Enclosure:
-    totalenclosures=0
+    totalenclosures = 0
 
-    def __init__(self,enclosureID, type):
-          self.enclosureID=enclosureID
-          self.type=type
-          self.animals=[]
-          Enclosure.totalenclosures+=1
+    def __init__(self, enclosureID, type):
+        self.enclosureID = enclosureID
+        self.type = type
+        self.animals = []
+        Enclosure.totalenclosures += 1
 
     def add_animal(self, animal):
-          if len(self.animals)<10:
-                self.animals.append(animal)
+        if len(self.animals) < 10:
+            self.animals.append(animal)
 
     def list_animals(self):
-          print(f"Enclosure {self.enclosureID} {self.type} has:")
-          for animal in self.animal:
-                print(f"{animal.name}")   
+        print(f"Enclosure {self.enclosureID} {self.type} has:")
+        for animal in self.animals:  # fixed self.animal → self.animals
+            print(f"{animal.name}")   
 
 class Staff(ABC):
     def __init__(self, name, staffId):
@@ -84,61 +85,60 @@ class Veterinarian(Staff):
 
 
 class Zoo:
+    def __init__(self):
+        self.animals = []
+        self.enclosures = []
+        self.staff = []
 
-      def __init__(self):
-            self.animals=[]
-            self.enclosures=[]
-            self.staff=[]
+    def addAnimal(self, animals):
+        if len(self.animals) < 20:
+            self.animals.append(animals)
 
-      def addAnimal(self,animals):
-            if len(self.animals)<20:
-                 self.animals.append(animals)
-
-
-      def add_enclosure(self, enclosure):
+    def add_enclosure(self, enclosure):
         if len(self.enclosures) < 10:
             self.enclosures.append(enclosure)
 
-      def add_staff(self, staff_member):
+    def add_staff(self, staff_member):
         if len(self.staff) < 10:
             self.staff.append(staff_member)
 
-      def show_all_animals(self):
+    def show_all_animals(self):
         for animal in self.animals:
-            animal.make_sound()
-            animal.get_diet()
+            animal.makeSound()  # fixed method name
+            animal.getDiet()    # fixed method name
 
-      def show_staff_duties(self):
+    def show_staff_duties(self):
         for member in self.staff:
             member.perform_duty()
 
-      def show_summary(self):
+    def show_summary(self):
         print(f"\nTotal Animals: {Animal.total_animals}")
-        print(f"Total Enclosures: {Enclosure.total_enclosures}")
+        print(f"Total Enclosures: {Enclosure.totalenclosures}")  # fixed attribute name
 
-zoooo=Zoo()
 
-a1=Lion("abdullah", 5)
-a2=Elephant("Askari", 10)
-a3=Parrot("Kabeer", 2)
+# Main code
+zoooo = Zoo()
+
+a1 = Lion("abdullah", 5, "carnivore")
+a2 = Elephant("Askari", 10, "omnivore")
+a3 = Parrot("Kabeer", 2, "herbivore")  # fixed constructor call
 
 zoooo.addAnimal(a1)
 zoooo.addAnimal(a2)
 zoooo.addAnimal(a3)
 
-e1=Enclosure(1,"Amazon")
+e1 = Enclosure(1, "Amazon")
 e1.add_animal(a1)
 
 e2 = Enclosure(2, "Rainforest")
-
 e2.add_animal(a2)
 e2.add_animal(a3)
 
 zoooo.add_enclosure(e1)
 zoooo.add_enclosure(e2)
 
-s1=Zookeeper("Zain", 100)
-s2=Veterinarian("Musdiq", 200)
+s1 = Zookeeper("Zain", 100)
+s2 = Veterinarian("Musdiq", 200)
 
 zoooo.add_staff(s1)
 zoooo.add_staff(s2)
